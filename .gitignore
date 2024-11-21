@@ -1,0 +1,49 @@
+# Python compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment
+venv/
+.env/
+
+# Environment variables
+*.env
+.env.*
+
+# Database
+*.sqlite3
+*.db
+
+# Flask debug logs
+*.log
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# MacOS system files
+.DS_Store
+
+# Byte-compiled or other temporary files
+*.swp
+*.bak
+*.tmp
+*~
+*.~*
+
+# Pytest and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node and frontend builds (if applicable)
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+
+# Misc
+*.egg-info/
+.eggs/

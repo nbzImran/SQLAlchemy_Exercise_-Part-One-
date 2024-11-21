@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %} User Listing {% endblock %}
+{% block content %}
+<h1>All Users</h1>
+<a href="/user/new" class="btn btn-primary mb-3">Add new user</a>
+<ul class="list-group">
+    {%for user in users %}
+    <li class="list-group-item d-flex justify content-between align-items-center">
+        <a href="/user/{{ user.id }}">{{ user.full_name }}</a>
+        <a href="/user/{{ user.id }}/edit" class="btn btn-sm btn-secondary">Edit</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

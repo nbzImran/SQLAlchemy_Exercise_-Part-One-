@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Add New User{% endblock %}
+
+
+{% block content %}
+<h1>Add New User</h1>
+<form action="/user/new" method="POST">
+    <div class="mb-3">
+        <label for="first_name" class="form-label">Fisrt Name</label>
+        <input type="text" id="first_name" name="first_name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="last_name" class="form-label">Last Name</label>
+        <input type="text" id="last_name" name="last_name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="img-url" class="form-label">Profile Image</label>
+        <input type="url" id="img-url" name="img-url" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Add User</button>
+</form>
+{% endblock %}
