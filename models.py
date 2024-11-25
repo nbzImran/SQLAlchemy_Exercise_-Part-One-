@@ -1,5 +1,6 @@
 """Models for Blogly."""
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -11,7 +12,7 @@ def connect_db(app):
 
 
 class User(db.Model):
-    """USer Model for the blogly applicatuon."""
+    """User Model for the blogly application."""
 
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -32,4 +33,29 @@ class User(db.Model):
 
     def __repr__(self):
         """Provide a readable representation of user."""
-        return f"<User id={self.id} first_name={self.first_name} last_name={self.last_name}  img_url={self.img_url} full_name={self.full_name}>"
+        return (
+            f"<User id={self.id} first_name={self.first_name}"
+            f"last_name={self.last_name}  img_url={self.img_url} full_name={self.full_name}>"
+        )
+
+
+class Post(db.Model):
+    """Model for blog posts."""
+
+    __tablename__ = 'posts'
+
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(100), nullable=False)  # Title max length 100
+    content = db.Column(db.Text, nullable=False)  # Post content
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # Timestamp
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Foreign key to User
+
+    user = db.relationship('User', backref=db.backref('posts', lazy=True))
+
+    def __repr__(self):
+        """Provide a readable representation of the post."""
+        return (
+            f"<Post id={self.id} title='{self.title}' created_at='{self.created_at}' "
+            f"user_id={self.user_id}>"
+        )

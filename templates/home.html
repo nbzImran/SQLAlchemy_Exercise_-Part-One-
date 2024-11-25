@@ -1,8 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Home Page{% endblock %}
 
 {% block content %}
-<h1>Welcome to Blogly!</h1>
+<h1>Recent Posts</h1>
+{% if posts %}
+<ul class="list-group">
+    {% for post in posts %}
+    <li class="list-group-item">
+        <h5><a href="/posts/{{ post.id }}">{{ post.title }}</a></h5>
+        <p>
+            <em>Posted on {{ post.created_at.strftime('%B %d, %Y') }}by
+                <a href="/user/{{ post.user.id }}">{{ post.user.full_name}}</a>
+            </em>
+        </p>
+        <p>{{ post.content [:100] }}
+            {% if post.contet|length > 100 %}...{% endif %}
+        </p>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>no Posts avalible.</p>
+{% endif %}
 <a href="/user" class="btn btn-primary"> View Users</a>
 {% endblock %}

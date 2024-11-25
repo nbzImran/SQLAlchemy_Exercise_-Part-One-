@@ -1,8 +1,9 @@
 """Blogly application."""
 
-from flask import Flask, render_template,request, redirect
+from flask import Flask, render_template,request, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User
+from posts import posts_bp, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -10,8 +11,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "noscamallowed25"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
+debug = DebugToolbarExtension(app)
 
 connect_db(app)
+
+#register the blueprint
+app.register_blueprint(posts_bp)
+
 with app.app_context():
     db.create_all()
 
@@ -25,7 +31,8 @@ with app.app_context():
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    rencent_posts = Post.query.order_by(Post.created_at.desc()).limit(5).all()
+    return render_template('home.html',posts=rencent_posts)
 
 
 @app.route('/user')
@@ -79,7 +86,14 @@ def edit_user(user_id):
 @app.route('/user/<int:user_id>/delete', methods=["POST"])
 def delete_user(user_id):
     """Delete a user."""
+
     user = User.query.get_or_404(user_id)
+
+    if user.posts:
+        # Prevent deletion if the user has associated posts
+        flash("cannot delete users with posts. Please delete posts first.", "error")
+        return redirect(f"/user/{user_id}")
+
     db.session.delete(user)
     db.session.commit()
     return redirect('/user')
