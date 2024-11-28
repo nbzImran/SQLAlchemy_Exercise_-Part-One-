@@ -13,6 +13,15 @@
         <label for="content" class="form-label">content</label>
         <textarea name="content" id="content" rows="5" class="form-control" placeholder="Add Post" required></textarea>
     </div>
+    <div class="mb-3">
+        <label for="tags" class="form-label">Tags</label>
+        <select name="tags" id="tags" class="form-control" multiple>
+            {% for tag in tags %}
+            <option value="{{ tag.id }}">{{ tag.name }}</option>
+            {% endfor %}
+        </select>
+        <small class="form-text text-muted">Hold down Ctrl (Windows) or command (Mac) key to select multiple tags.</small>
+    </div>
     <button class="btn btn-primary" type="submit">Add Post</button>
 </form>
 <a href="/user/{{ user.id }}" class="btn btn-secondary">Cancel</a>

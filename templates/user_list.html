@@ -1,15 +1,23 @@
 {% extends "base.html" %}
-
-{% block title %} User Listing {% endblock %}
+{% block title %}User List{% endblock %}
 {% block content %}
 <h1>All Users</h1>
-<a href="/user/new" class="btn btn-primary mb-3">Add new user</a>
+
+<a href="/tags/new" class="btn btn-primary mb-3">Add Tag</a>
+
 <ul class="list-group">
-    {%for user in users %}
-    <li class="list-group-item d-flex justify content-between align-items-center">
+    {% for user in users %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
         <a href="/user/{{ user.id }}">{{ user.full_name }}</a>
-        <a href="/user/{{ user.id }}/edit" class="btn btn-sm btn-secondary">Edit</a>
+        <div>
+            <a href="/user/{{ user.id }}/edit" class="btn btn-sm btn-secondary">Edit</a>
+            <form action="/user/{{ user.id }}/delete" method="POST" style="display: inline;">
+                <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+            </form>
+        </div>
     </li>
     {% endfor %}
 </ul>
+
+<a href="/user/new" class="btn btn-primary mt-3">Add New User</a>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Tags{% endblock %}
+{% block content %}
+<h1>Tags</h1>
+<ul class="list-group">
+    {% for tag in tags %}
+    <li class="list-group-item">
+        <h2><a href="/tags/{{ tag.id }}">{{ tag.name }}</a></h2>
+        <div>
+            <strong>Posts:</strong>
+            <ul>
+                {% if tag.posts %}
+                {% for post in tag.posts %}
+                <li>
+                    <a href="/posts/{{ post.id }}">{{ post.title }}</a>
+                </li>
+                {% endfor %}
+                {% else %}
+                <li class="text-muted">No Post Associated</li>
+                {% endif %}
+            </ul>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+<a href="/tags/new" class="btn btn-primary">Add Tag</a>
+{% endblock %}

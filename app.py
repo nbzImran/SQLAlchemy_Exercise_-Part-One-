@@ -4,6 +4,7 @@ from flask import Flask, render_template,request, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User
 from posts import posts_bp, Post
+from tags import tags_bp, Tag
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -15,8 +16,12 @@ debug = DebugToolbarExtension(app)
 
 connect_db(app)
 
-#register the blueprint
+#register the blueprint for the posts
 app.register_blueprint(posts_bp)
+
+#register the blueprint for the tags
+app.register_blueprint(tags_bp)
+
 
 with app.app_context():
     db.create_all()
@@ -31,8 +36,9 @@ with app.app_context():
 
 @app.route('/')
 def home():
-    rencent_posts = Post.query.order_by(Post.created_at.desc()).limit(5).all()
-    return render_template('home.html',posts=rencent_posts)
+    recent_posts = Post.query.order_by(Post.created_at.desc()).limit(5).all()
+    tags = Tag.query.order_by(Tag.name).all()
+    return render_template('home.html',posts=recent_posts, tags=tags)
 
 
 @app.route('/user')

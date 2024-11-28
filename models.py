@@ -51,7 +51,8 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # Timestamp
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Foreign key to User
 
-    user = db.relationship('User', backref=db.backref('posts', lazy=True))
+    user = db.relationship('User', backref=db.backref('posts', lazy=True, cascade="all, delete-orphan"))
+    tags = db.relationship('Tag', secondary='post_tags', back_populates='posts')
 
     def __repr__(self):
         """Provide a readable representation of the post."""
@@ -59,3 +60,28 @@ class Post(db.Model):
             f"<Post id={self.id} title='{self.title}' created_at='{self.created_at}' "
             f"user_id={self.user_id}>"
         )
+    
+
+
+class Tag(db.Model):
+    """Model for tags."""
+
+
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+
+    posts = db.relationship('Post', secondary='post_tags', back_populates='tags')
+
+
+
+
+class PostTag(db.Model):
+    """Model for the many-to-many relationship between posts and tags."""
+
+    __tablename__ = 'post_tags'
+
+
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)

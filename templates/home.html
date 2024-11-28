@@ -17,11 +17,23 @@
         <p>{{ post.content [:100] }}
             {% if post.contet|length > 100 %}...{% endif %}
         </p>
+        <ul>
+            {% for tag in post.tags %}
+            <li><a href="/tags/{{ tag.id }}">{{ tag.naem }}</a></li>
+            {% endfor %}
+        </ul>
     </li>
+
     {% endfor %}
 </ul>
 {% else %}
 <p>no Posts avalible.</p>
 {% endif %}
+<h2>Tags</h2>
+<ul>
+    {% for tag in tags %}
+    <li><a href="/tags/{{ tag.id }}">{{ tag.name }}</a></li>
+    {% endfor %}
+</ul>
 <a href="/user" class="btn btn-primary"> View Users</a>
 {% endblock %}
